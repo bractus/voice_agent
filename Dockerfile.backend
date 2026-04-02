@@ -1,0 +1,26 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# System deps: espeak-ng (TTS), ffmpeg (audio utilities), build tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    espeak-ng \
+    ffmpeg \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python deps first (layer cache)
+COPY pyproject.toml .
+RUN pip install --no-cache-dir -e ".[dev]"
+
+# Copy source
+COPY src/ ./src/
+
+EXPOSE 8000
+
+ENV TTS_BACKEND=espeak \
+    API_HOST=0.0.0.0 \
+    API_PORT=8000
+
+CMD ["python", "src/app.py"]

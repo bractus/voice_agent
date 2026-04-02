@@ -1,3 +1,14 @@
+.venv/
+venv/
+.claude/
+.chainlit/
+.specify/
+.env
+CLAUDE.md
+chainlit.md
+specs/
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

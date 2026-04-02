@@ -1,0 +1,15 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.env
+.git/
+.gitignore
+specs/
+tests/
+frontend/node_modules/
+frontend/dist/
+*.md
+docker-compose.yml
+Dockerfile*
