@@ -13,14 +13,10 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{
-          width: '100vw', height: '100vh', display: 'flex',
-          alignItems: 'center', justifyContent: 'center',
-          background: 'var(--page-bg, #0d0015)',
-        }}>
-          <div className="glass" style={{ padding: '32px', borderRadius: '20px', maxWidth: '480px', color: '#f87171' }}>
-            <h2 style={{ marginBottom: '12px' }}>Something went wrong</h2>
-            <pre style={{ fontSize: '0.75rem', whiteSpace: 'pre-wrap', color: 'rgba(255,255,255,0.6)' }}>
+        <div className="dialog-backdrop">
+          <div className="dialog" role="alert">
+            <h2>Something went wrong · Algo deu errado</h2>
+            <pre style={{ fontSize: '0.75rem', whiteSpace: 'pre-wrap', color: 'var(--ink-muted)' }}>
               {this.state.message}
             </pre>
           </div>

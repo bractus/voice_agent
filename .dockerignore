@@ -13,3 +13,8 @@ frontend/dist/
 *.md
 docker-compose.yml
 Dockerfile*
+**/.env
+**/.env.*
+interviews/
+*.log
+.DS_Store

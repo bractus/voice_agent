@@ -18,6 +18,12 @@ RUN printf 'server {\n\
     root /usr/share/nginx/html;\n\
     index index.html;\n\
     location / { try_files $uri $uri/ /index.html; }\n\
+    location /api/ {\n\
+        proxy_pass http://backend:8000;\n\
+        proxy_set_header Host $host;\n\
+        client_max_body_size 25m;\n\
+        proxy_read_timeout 180s;\n\
+    }\n\
     location /ws/ {\n\
         proxy_pass http://backend:8000;\n\
         proxy_http_version 1.1;\n\

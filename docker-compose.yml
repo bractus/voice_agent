@@ -1,50 +1,22 @@
 services:
 
-  ollama:
-    image: ollama/ollama:latest
-    container_name: voice-fairy-ollama
-    volumes:
-      - ollama_data:/root/.ollama
-    ports:
-      - "11434:11434"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-    restart: unless-stopped
-
-  ollama-pull:
-    image: ollama/ollama:latest
-    container_name: voice-fairy-ollama-pull
-    depends_on:
-      ollama:
-        condition: service_healthy
-    volumes:
-      - ollama_data:/root/.ollama
-    entrypoint: ["ollama", "pull", "llama3.2:3b"]
-    environment:
-      - OLLAMA_HOST=http://ollama:11434
-    restart: "no"
-
   backend:
     build:
       context: .
       dockerfile: Dockerfile.backend
     container_name: voice-fairy-backend
-    depends_on:
-      ollama:
-        condition: service_healthy
+    # All models are OpenAI services (no local models, no Ollama). The API key comes from
+    # src/.env, which is never copied into the image.
+    env_file:
+      - src/.env
     environment:
-      - OLLAMA_BASE_URL=http://ollama:11434
-      - OLLAMA_MODEL=llama3.2:3b
-      - WHISPER_MODEL=base.en
-      - WHISPER_DEVICE=cpu
-      - WHISPER_COMPUTE_TYPE=int8
-      - TTS_BACKEND=espeak
       - API_HOST=0.0.0.0
       - API_PORT=8000
       - LOG_LEVEL=INFO
+      - INTERVIEWS_DIR=/app/interviews
+    volumes:
+      # Interview transcripts and reports outlive the container (FR-022).
+      - ./interviews:/app/interviews
     ports:
       - "8000:8000"
     restart: unless-stopped
@@ -59,6 +31,3 @@ services:
     ports:
       - "80:80"
     restart: unless-stopped
-
-volumes:
-  ollama_data:

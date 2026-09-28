@@ -1,0 +1,9 @@
+# Distributed Systems Notes
+
+## Hashing
+
+Consistent hashing maps both servers and keys onto the same hash ring, so adding or removing a server only remaps the keys between it and its neighbour. Distributed caches use it to avoid a full reshuffle when the cluster changes size.
+
+## Consensus
+
+The Raft consensus algorithm elects a single leader that appends entries to a replicated log. A write is committed once a majority of followers acknowledge it, which keeps the cluster consistent even when a minority of nodes fail.
